@@ -4,21 +4,30 @@
         <meta charset="UTF-8">
         <meta name = "viewport" content="width=device-width, initial-scale=1.0">
         <title>Rejestracja</title>
+        <link rel="stylesheet" href="style_register.css">
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     </head>
     <body>
         <main>
-            <section id="Register">
-                <form id="RegisterForm">
-                    <label for="username">Nazwa użytkownika</label>
-                    <input type="text" id="username">
-                    <label for="password">Hasło</label>
-                    <input type="password" id="password">
-                    <button type="submit" id="registerButton">Zarejestruj się</button>
-                    <button type="button" id="loginButton">Zaloguj się</button>
-                </form>
-                <div id="message"></div>
-                <script src="Register.js"></script>
-            </section>
+            <div class="wrapper">
+                <section id="Register">
+                    <h1>Login</h1>
+                    <form id="RegisterForm">
+                        <div class="input-box">
+                        <input type="text" id="username" placeholder="Username" required>
+                        <i class='bx bxs-user'></i>
+                        </div>
+                        <div class="input-box">
+                        <input type="password" id="password" placeholder="Password" required>
+                        <i class='bx bxs-lock-alt'></i>
+                        </div> 
+                        <button type="submit" id="registerButton" class="btn">Zarejestruj się</button>
+                        <button type="button" id="loginButton" class="btn">Zaloguj się</button>
+                    </form>
+                    <div id="message"></div>
+                    <script src="Register.js"></script>
+                </section>
+            </div>
         </main>
     </body>
 </html> 
