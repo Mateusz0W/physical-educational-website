@@ -1,3 +1,8 @@
+const BASE_URL = window.location.hostname === 'localhost'
+? 'http://localhost:9013'
+: 'http://pascal.fis.agh.edu.pl:9013';
+
+
 const buttonDiv =document.getElementById("Buttons");
 
 window.addEventListener("load",function(){
@@ -36,7 +41,7 @@ async function save(){
         massY: document.getElementById("massY").value,
     }
     try {
-        const response = await fetch('http://localhost:9013/save', {
+        const response = await fetch(`${BASE_URL}/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,7 +66,7 @@ async function load(){
         return;
     }
     try {
-        const response = await fetch('http://localhost:9013/load', {
+        const response = await fetch(`${BASE_URL}/load`, {
             method: 'GET',
             headers: {
                 'Authorization': token,

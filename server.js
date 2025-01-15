@@ -11,7 +11,7 @@ const app = express();
 
 const secretKey = 'onomatopeja';
 
-app.use(cors());
+app.use(cors({origin:{dotAll:true}}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}))
 

@@ -1,3 +1,7 @@
+const BASE_URL = window.location.hostname === 'localhost'
+? 'http://localhost:9013'
+: 'http://pascal.fis.agh.edu.pl:9013';
+
 document.getElementById("registerButton").addEventListener("click",async function (event){
     event.preventDefault();
 
@@ -5,7 +9,7 @@ document.getElementById("registerButton").addEventListener("click",async functio
     const password=document.getElementById("password").value;
 
     try{
-        const response = await fetch('http://localhost:9013/register',{
+        const response = await fetch(`${BASE_URL}/register`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -30,7 +34,7 @@ document.getElementById("loginButton").addEventListener("click",async function (
     const password=document.getElementById("password").value;
 
     try{
-        const response = await fetch('http://localhost:9013/login',{
+        const response = await fetch(`${BASE_URL}/login`,{
             method:'POST',
             headers: {
                 'Content-Type': 'application/json',
