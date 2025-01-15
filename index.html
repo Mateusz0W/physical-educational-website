@@ -4,40 +4,56 @@
         <meta charset="UTF-8">
         <meta name = "viewport" content="width=device-width, initial-scale=1.0">
         <title>Projekt</title>
+        <link rel="stylesheet" href="style_main.css">
     </head>
     <body>
-        <header>Jakiś fajny nagłówek</header>
-        <nav>
-            <a href="Register.html">Rejestracja</a>
-        </nav>
+        <header class="header">
+            Wachadło Sprężynowe
+            <nav class ="navbar">
+                    <a href="Register.html">Rejestracja</a>
+            </nav>
+        </header>
         <main>
             <section id="controls">
                 <h2>Parametry Symulacji</h2>
                 <form id="parameters">
+                    <div class="input-field">
                     <label for="length">długość (m)</label>
                     <input type="number" id="length" value="1" step="1" min="0.1">
+                    </div>
+                    <div class="input-field">
                     <label for="mass">massa (kg)</label>
                     <input type="number" id="mass" value="1" step="1" min="0.1">
+                    </div>
+                    <div class="input-field">
                     <label for="spring-constant">stała sprężystośći (N.m)</label>
                     <input type="number" id="spring-constant" value="40" step="1" min="0.1">
+                    </div>
+                    <div class="input-field">
                     <label for="gravity">stała grawitacji (m/s^2)</label>
                     <input type="number" id="gravity" value="9.81" step="0.1" min="0.1">
+                    </div>
+                    <div class="input-field">
                     <label for="angle">kąt wychylenia</label>
                     <input type="number" id="angle" value="0" step="1" >
+                    </div>
+                    <div class="input-field">
                     <label for="massX">współrzędna X</label>
                     <input type="number" id="massX" value="0" step="1" >
+                    </div>
+                    <div class="input-field">
                     <label for="massY">współrzędna Y</label>
                     <input type="number" id="massY" value="0" step="1" >
+                    </div>
                     <button type="button" id="start-button">Zatwierdź</button>
                 </form>
             </section>
             <section id ="simulation">
-                <h2>Symulacja</h2>
                 <canvas id="canvas" width="800" height="400"></canvas>
                 <script src="Simulation.js"></script>
+                <div id="Buttons">
+                </div>
             </section>
-            <div id="Buttons">
-            </div>
             <script src="Buttons.js"></script>
         </main>
     </body>
