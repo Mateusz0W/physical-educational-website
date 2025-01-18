@@ -50,8 +50,8 @@ app.post('/login',async(req,res)=>{
         if(!user || user.password != password)
             return res.status(401).json({ error: "Nieprawidłowe dane logowania." });
         
-        const accessToken = jwt.sign({username},accessTokenSecret,{expiresIn: '1m'});
-        const refreshToken = jwt.sign({username},refreshTokenSecret,{expiresIn: '3m'});
+        const accessToken = jwt.sign({username},accessTokenSecret,{expiresIn: '1h'});
+        const refreshToken = jwt.sign({username},refreshTokenSecret,{expiresIn: '1d'});
         refreshTokens.push(refreshToken);
 
         return res.status(200).json({ message: "Zalogowano pomyślnie!", accessToken,refreshToken });
@@ -79,7 +79,7 @@ app.post('/refresh',(req,res)=>{
 
     try{
         const {username} =jwt.verify(refreshToken,refreshTokenSecret);
-        const newAccessToken = jwt.sign({ username },accessTokenSecret , { expiresIn: '1m' });
+        const newAccessToken = jwt.sign({ username },accessTokenSecret , { expiresIn: '1h' });
         return res.status(200).json({
             accessToken: newAccessToken
         });
