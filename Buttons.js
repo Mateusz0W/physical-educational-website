@@ -6,7 +6,7 @@ const BASE_URL = window.location.hostname === 'localhost'
 const buttonDiv =document.getElementById("Buttons");
 
 window.addEventListener("load",function(){
-    const token =this.localStorage.getItem("token");
+    const token =this.localStorage.getItem("accessToken");
     if(token)
     {    
         addButtons("Zapisz",save);
@@ -26,7 +26,7 @@ function logout(){
     alert("Wylogowano się");
 }
 async function save(){
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("accessToken"); 
     if (!token) {
         alert("Brak autoryzacji. Zaloguj się ponownie.");
         return;
@@ -41,7 +41,7 @@ async function save(){
         massY: document.getElementById("massY").value,
     }
     try {
-        const response = await fetch(`${BASE_URL}/save`, {
+        const response = await fetchWithRefresh(`${BASE_URL}/save`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,13 +60,13 @@ async function save(){
     }
 }
 async function load(){
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("accessToken"); 
     if (!token) {
         alert("Brak autoryzacji. Zaloguj się ponownie.");
         return;
     }
     try {
-        const response = await fetch(`${BASE_URL}/load`, {
+        const response = await fetchWithRefresh(`${BASE_URL}/load`, {
             method: 'GET',
             headers: {
                 'Authorization': token,
@@ -91,4 +91,46 @@ async function load(){
     catch (error) {
         console.error("Błąd wczytywania: ", error);
     }
+}
+async function fetchWithRefresh(url, options = {}) {
+    let response = await fetch(url, options);
+
+    if (response.status === 403) {
+        const refreshToken = localStorage.getItem("refreshToken");
+        if (!refreshToken) {
+            alert("Brak tokena odświeżania. Zaloguj się ponownie.");
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const refreshResponse = await fetch(`${BASE_URL}/refresh`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ refreshToken }),
+        });
+
+        if (refreshResponse.ok) {
+            const { accessToken } = await refreshResponse.json();
+            localStorage.setItem("accessToken", accessToken);
+
+            // Powtórz pierwotne żądanie z nowym tokenem
+            options.headers = {
+                ...options.headers,
+                'Authorization': accessToken,
+            };
+            response = await fetch(url, options);
+        } else {
+            const errorText = await refreshResponse.text();
+            alert(`Sesja wygasła: ${errorText}`);
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+            window.location.href = "login.html";
+            return;
+        }
+    }
+    return response;
 }

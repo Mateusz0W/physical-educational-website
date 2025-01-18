@@ -9,7 +9,8 @@ const url = 'mongodb://2wardawa:pass2wardawa@172.20.44.25/2wardawa';
   
 const app = express();
 
-const secretKey = 'onomatopeja';
+const accessTokenSecret = 'onomatopeja';
+const refreshTokenSecret = 'monochromatyczne'
 
 app.use(cors({origin:{dotAll:true}}))
 app.use(bodyParser.json());
@@ -20,6 +21,8 @@ mongodb.MongoClient.connect(url, function(err, client) {
   db = client.db(dbname);
   console.log('Connect OK');
 })
+
+let refreshTokens=[]
 
 app.post('/register',async(req,res)=>{
     try{
@@ -47,8 +50,11 @@ app.post('/login',async(req,res)=>{
         if(!user || user.password != password)
             return res.status(401).json({ error: "Nieprawidłowe dane logowania." });
         
-        const token = jwt.sign({username},secretKey,{expiresIn: '20m'});
-        return res.status(200).json({ message: "Zalogowano pomyślnie!", token });
+        const accessToken = jwt.sign({username},accessTokenSecret,{expiresIn: '1m'});
+        const refreshToken = jwt.sign({username},refreshTokenSecret,{expiresIn: '3m'});
+        refreshTokens.push(refreshToken);
+
+        return res.status(200).json({ message: "Zalogowano pomyślnie!", accessToken,refreshToken });
     }
     catch (error) {
         return res.status(500).json({ error: "Błąd logowania użytkownika." });
@@ -57,12 +63,31 @@ app.post('/login',async(req,res)=>{
 const authenticateJWT = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) return res.status(403).send("Token nie dostarczony");
-    jwt.verify(token,secretKey,(err,decoded)=>{
+    jwt.verify(token,accessTokenSecret,(err,decoded)=>{
         if (err) return res.status(403).send("Nieprawidłowy token");
         req.user = decoded.username;
         next();
     });
 }
+
+app.post('/refresh',(req,res)=>{
+    const {refreshToken}=req.body;
+    if(!refreshToken)
+        return res.status(401).json({error: "Token odświeżania jest wymagany"});
+    if(!refreshTokens.includes(refreshToken))
+        return res.status(403).json({error:"Nieprawidłowy token odświeżania"});
+
+    try{
+        const {username} =jwt.verify(refreshToken,refreshTokenSecret);
+        const newAccessToken = jwt.sign({ username },accessTokenSecret , { expiresIn: '1m' });
+        return res.status(200).json({
+            accessToken: newAccessToken
+        });
+    }catch (error) {
+        return res.status(403).json({ error: "Refresh token wygasł." });
+    }
+})
+
 app.post('/save', authenticateJWT, async (req, res) => {
     try {
         const username = req.user; 

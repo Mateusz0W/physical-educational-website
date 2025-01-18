@@ -45,7 +45,9 @@ document.getElementById("loginButton").addEventListener("click",async function (
         const messageElement = document.getElementById("message");
         if(response.ok){
             messageElement.innerHTML =result.message;
-            localStorage.setItem("token", result.token);
+            localStorage.setItem("accessToken", result.accessToken);
+            localStorage.setItem("refreshToken",result.refreshToken);
+
             window.location.href = "index.html";
         }
         else
