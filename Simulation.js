@@ -31,9 +31,26 @@ function calculate(massX,massY,theta,length,m,k,g){
     return {massX,massY,theta,dtheta,ds,s};
 
 }
-function draw_line(ctx,startX,startY,endX,endY){
+function draw_spring(ctx, startX, startY, endX, endY, coils = 10, amplitude = 5) {
+    const dx = endX - startX;
+    const dy = endY - startY;
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    const angle = Math.atan2(dy, dx);
+    const segmentLength = distance / (coils * 2);
+
     ctx.beginPath();
-    ctx.moveTo(startX,startY);
+    ctx.moveTo(startX, startY);
+
+    for (let i = 1; i <= coils * 2; i++) {
+        const offsetX = segmentLength * i;
+        const offsetY = (i % 2 === 0 ? -1 : 1) * amplitude;
+
+        const x = startX + Math.cos(angle) * offsetX - Math.sin(angle) * offsetY;
+        const y = startY + Math.sin(angle) * offsetX + Math.cos(angle) * offsetY;
+
+        ctx.lineTo(x, y);
+    }
+
     ctx.lineTo(endX, endY);
     ctx.stroke();
 }
@@ -46,8 +63,8 @@ function draw_frame(massX,massY){
     var canvas = document.getElementById("canvas");
     var ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    draw_line(ctx,400,50,massX,massY);
-    draw_circle(ctx,massX,massY,5);
+    draw_spring(ctx, 400, 50, massX, massY, 10, 10);
+    draw_circle(ctx,massX,massY,10);
 }
 
 function animate(massX,massY,theta,l,m,k,g){
