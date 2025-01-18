@@ -15,7 +15,7 @@ body {
     background: url(physic.jpg) no-repeat;
     background-size: cover;
     background-position: center;
-    color: white; /* Domyślny kolor tekstu */
+    color: white; 
 }
 
 .header {
@@ -77,20 +77,20 @@ body {
 
 main {
     display: grid;
-    grid-template-columns: 25% 75%; /* Szerokość kolumn: lewa - parametry, prawa - symulacja */
-    grid-template-rows: auto auto; /* Dwie wiersze: symulacja + przyciski */
-    margin-top: 50px; /* Odstęp na header */
+    grid-template-columns: 25% 75%; 
+    grid-template-rows: auto auto;
+    margin-top: 50px; 
     width: 100%;
-    height: calc(100vh - 80px); /* Pełna wysokość okna minus header */
-    gap: 10px; /* Odstęp między kolumnami i wierszami */
+    height: calc(100vh - 80px); 
+    gap: 10px; 
 }
 
 section {
     padding: 20px;
 }
 
-section:first-child { /* Parametry */
-    background: #333; /* Tło takie samo jak header */
+section:first-child { 
+    background: #333; 
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -111,14 +111,14 @@ button:hover {
 #simulation {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Przyciski i canvas wyrównane do lewej strony sekcji */
+    align-items: flex-start; 
 }
 
 #Buttons {
-    display: flex; /* Układ przycisków w rzędzie */
-    justify-content: flex-start; /* Przyciski wyrównane do lewej strony sekcji symulacji */
-    gap: 10px; /* Odstęp między przyciskami */
-    margin-top: 10px; /* Odstęp od canvasu */ 
+    display: flex; 
+    justify-content: flex-start; 
+    gap: 10px; 
+    margin-top: 10px; 
 }
 
 canvas {
