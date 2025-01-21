@@ -38,8 +38,6 @@ async function save(){
         springConstant: document.getElementById("spring-constant").value,
         gravity: document.getElementById("gravity").value,
         angle: document.getElementById("angle").value,
-        massX: document.getElementById("massX").value,
-        massY: document.getElementById("massY").value,
     }
     try {
         const response = await fetchWithRefresh(`${BASE_URL}/save`, {
@@ -80,8 +78,6 @@ async function load(){
             document.getElementById("spring-constant").value = result.springConstant;
             document.getElementById("gravity").value = result.gravity;
             document.getElementById("angle").value = result.angle;
-            document.getElementById("massX").value = result.massX;
-            document.getElementById("massY").value = result.massY;
 
             alert("Parametry wczytane!");
         }

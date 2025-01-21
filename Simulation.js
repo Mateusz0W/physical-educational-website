@@ -6,8 +6,6 @@ ds=0;
 function calculate(massX,massY,theta,length,m,k,g){
     conversion = 50 //1 meter in px
 
-    
-
     tInc = 0.017 //Consistent with 60fps
     
     d2theta =-(g/(length+s))*Math.sin(theta)-(2/(length+s))*ds*dtheta;
@@ -85,8 +83,8 @@ document.getElementById("start-button").addEventListener("click",function(){
     let k = parseFloat(document.getElementById("spring-constant").value);
     let g = parseFloat(document.getElementById("gravity").value);
     let theta = parseFloat(document.getElementById("angle").value)* Math.PI / 180;
-    let massX = parseFloat(document.getElementById("massX").value);
-    let massY =  parseFloat(document.getElementById("massY").value);
+    let massX = 200;
+    let massY =  100;
 
     animate(massX, massY, theta, l, m, k, g);
 })
